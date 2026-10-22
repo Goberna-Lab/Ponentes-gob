@@ -1,0 +1,349 @@
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  height: clamp(520px, 44.27vw, 850px);
+  overflow: hidden;
+  background: #000;
+}
+
+.hero__bg,
+.hero__capitolio {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  max-width: none;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.hero__bg {
+  top: -30.287px;
+  height: 1080.574px;
+}
+
+.hero__capitolio {
+  top: -61px;
+  height: 1080px;
+
+  @media (max-width: 900px) {
+    object-position: 80% center;
+  }
+}
+
+.hero__content {
+  position: absolute;
+  top: calc(50% + 0.5px);
+  left: max(24px, calc((100% - 1520px) / 2));
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  max-width: calc(100% - 48px);
+}
+
+.hero__logo {
+  width: 184px;
+  height: 47px;
+  object-fit: cover;
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(32px, 3.3334vw, 64px);
+  line-height: normal;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+
+.hero__title-accent {
+  background: linear-gradient(to right, var(--gold-from), var(--gold-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- Sección de ponentes ---------- */
+.speakers {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-section-bg);
+  padding: 80px 0;
+}
+
+.speakers__bg-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1275px;
+  /* Figma: opacidad 25 % + soft-light. El navegador no reproduce esa mezcla
+     igual; 0.1 en capa aislada es lo que mejor calza con el render de Figma. */
+  opacity: 0.1;
+  pointer-events: none;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(239, 239, 239, 0), #efefef);
+  }
+}
+
+.speakers__bg-bottom {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 714px;
+  height: 643.734px;
+  max-width: 100%;
+  object-fit: cover;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.speakers__inner {
+  position: relative;
+  width: min(1410px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.speakers__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 330px));
+  justify-content: center;
+  gap: 40px 30px;
+  margin-top: 80px;
+}
+
+.speakers__empty {
+  margin-top: 80px;
+  text-align: center;
+  font-size: 16px;
+  color: var(--color-text);
+}
+
+/* ---------- Buscador ---------- */
+.search {
+  display: flex;
+  width: min(690px, 100%);
+  height: 48px;
+  margin-left: auto;
+}
+
+.search__input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0 15px;
+  border: 0;
+  border-radius: 3px 0 0 3px;
+  background: #fff;
+  font-family: var(--font-input);
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--color-ink);
+  outline: none;
+
+  &::placeholder {
+    color: var(--color-placeholder);
+    opacity: 1;
+  }
+
+  &:focus-visible {
+    box-shadow: inset 0 0 0 2px var(--color-navy);
+  }
+}
+
+.search__button {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 2px solid #000;
+  border-radius: 0 3px 3px 0;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* ---------- Tarjeta ---------- */
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #fff;
+  scroll-margin-top: 24px;
+}
+
+.card__figure {
+  position: relative;
+  height: 440px;
+  overflow: hidden;
+  border-radius: 2px 2px 0 0;
+  background: var(--color-photo-bg);
+}
+
+.card__crop {
+  position: absolute;
+  bottom: 0;
+  transform: translateX(-50%);
+}
+
+.card__crop-inner {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+
+  &.is-flipped {
+    transform: scaleX(-1);
+  }
+
+  img {
+    position: absolute;
+    max-width: none;
+  }
+}
+
+.card__info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 16px;
+  background: #fff;
+}
+
+.card__tag {
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.44px;
+  color: var(--color-muted);
+}
+
+.card__name {
+  margin-top: 6px;
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 26px;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.card__specialty {
+  min-height: 40px;
+  margin-top: 6px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-text);
+}
+
+.card__divider {
+  width: 100%;
+  height: 1px;
+  margin: 18px 0;
+  border: 0;
+  background: var(--color-line);
+}
+
+.card__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.card__cta {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  border-radius: 8px;
+  background: var(--color-navy);
+  color: #fff;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 20px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: #1c2740;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-navy);
+    outline-offset: 2px;
+  }
+}
+
+.card__cta-arrow {
+  font-size: 12px;
+}
+
+.card__copy {
+  position: relative;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: var(--color-ink);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-navy);
+    outline-offset: 2px;
+  }
+
+  &.is-copied {
+    border-color: var(--gold-to);
+  }
+}
+
+.copy-icon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 16px;
+  height: 16px;
+}
+
+.copy-icon__back,
+.copy-icon__front {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 2.5px;
+}
+
+.copy-icon__back {
+  top: 1px;
+  left: 5px;
+}
+
+.copy-icon__front {
+  top: 5px;
+  left: 1px;
+  background: #fff;
+}

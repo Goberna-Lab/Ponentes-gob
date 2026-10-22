@@ -1,0 +1,47 @@
+:root {
+  /* Colores (Figma · Foro Ponentes) */
+  --color-ink: #0a0a0a;
+  --color-text: #4a4a4a;
+  --color-muted: #6b6b6b;
+  --color-navy: #0e1526;
+  --color-line: #e6e6e6;
+  --color-border: #d9d9d9;
+  --color-photo-bg: #f8f8f8;
+  --color-section-bg: #f5f9fc;
+  --color-placeholder: rgba(126, 126, 126, 0.75);
+  --gold-from: #70572b;
+  --gold-to: #d6a752;
+
+  --font-display: 'Montserrat', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-input: 'Urbanist', system-ui, sans-serif;
+
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background: var(--color-section-bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+img {
+  display: block;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}

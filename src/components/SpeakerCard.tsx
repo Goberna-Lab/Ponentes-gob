@@ -27,7 +27,7 @@ export function SpeakerCard({ ponente }: { ponente: Ponente }) {
 
   return (
     <article className="card" id={slug}>
-      {/* El clic solo activa el efecto (en celulares no hay hover); el perfil se abre con el botón. */}
+      {/* El clic solo activa/desactiva el efecto; el perfil se abre con el botón. */}
       <div
         className={active ? 'card__figure is-active' : 'card__figure'}
         onClick={() => setActive((value) => !value)}

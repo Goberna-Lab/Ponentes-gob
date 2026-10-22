@@ -200,8 +200,6 @@
   position: absolute;
   bottom: 0;
   transform: translateX(-50%);
-  transform-origin: 50% 100%;
-  transition: transform 0.4s ease;
 }
 
 .card__figure-overlay {
@@ -213,26 +211,8 @@
   transition: opacity 0.3s ease;
 }
 
-.card__figure.is-active {
-  .card__crop {
-    transform: translateX(-50%) scale(1.05);
-  }
-
-  .card__figure-overlay {
-    opacity: 1;
-  }
-}
-
-@media (hover: hover) {
-  .card__figure:hover {
-    .card__crop {
-      transform: translateX(-50%) scale(1.05);
-    }
-
-    .card__figure-overlay {
-      opacity: 1;
-    }
-  }
+.card__figure.is-active .card__figure-overlay {
+  opacity: 1;
 }
 
 .card__crop-inner {

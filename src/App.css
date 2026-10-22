@@ -318,6 +318,64 @@
   &.is-copied {
     border-color: var(--gold-to);
   }
+
+  .check-icon {
+    position: absolute;
+    top: 11px;
+    left: 14px;
+    width: 8px;
+    height: 13px;
+    border: solid var(--gold-from);
+    border-width: 0 2px 2px 0;
+    opacity: 0;
+    transform: rotate(45deg) scale(0.6);
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .copy-icon {
+    transition: opacity 0.2s;
+  }
+
+  &.is-copied .copy-icon {
+    opacity: 0;
+  }
+
+  &.is-copied .check-icon {
+    opacity: 1;
+    transform: rotate(45deg) scale(1);
+  }
+}
+
+.card__copy-tip {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--color-navy);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s, transform 0.2s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    right: 13px;
+    border: 5px solid transparent;
+    border-top-color: var(--color-navy);
+  }
+
+  .is-copied > & {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .copy-icon {

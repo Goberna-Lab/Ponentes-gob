@@ -6,13 +6,9 @@ export function SpeakerCard({ ponente }: { ponente: Ponente }) {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(url)
-      setCopied(true)
-      window.setTimeout(() => setCopied(false), 1600)
-    } catch {
-      // Sin permiso de portapapeles: no hay nada más que hacer.
-    }
+    if (!(await copyText(url))) return
+    setCopied(true)
+    window.setTimeout(() => setCopied(false), 1800)
   }
 
   const cropStyle: CSSProperties = {
@@ -64,9 +60,32 @@ export function SpeakerCard({ ponente }: { ponente: Ponente }) {
               <span className="copy-icon__back" />
               <span className="copy-icon__front" />
             </span>
+            <span className="check-icon" aria-hidden="true" />
+            <span className="card__copy-tip" role="status">
+              {copied ? '¡Link copiado!' : ''}
+            </span>
           </button>
         </div>
       </div>
     </article>
   )
+}
+
+/** Copia al portapapeles; los navegadores internos (WhatsApp, Instagram) a veces no tienen la API. */
+async function copyText(text: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(text)
+    return true
+  } catch {
+    const textarea = document.createElement('textarea')
+    textarea.value = text
+    textarea.setAttribute('readonly', '')
+    textarea.style.position = 'fixed'
+    textarea.style.opacity = '0'
+    document.body.appendChild(textarea)
+    textarea.select()
+    const ok = document.execCommand('copy')
+    textarea.remove()
+    return ok
+  }
 }

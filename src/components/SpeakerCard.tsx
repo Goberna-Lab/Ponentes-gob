@@ -4,6 +4,7 @@ import type { Ponente } from '../data/ponentes'
 export function SpeakerCard({ ponente }: { ponente: Ponente }) {
   const { slug, url, name, specialty, photo, crop } = ponente
   const [copied, setCopied] = useState(false)
+  const [active, setActive] = useState(false)
 
   const handleCopy = async () => {
     if (!(await copyText(url))) return
@@ -26,19 +27,18 @@ export function SpeakerCard({ ponente }: { ponente: Ponente }) {
 
   return (
     <article className="card" id={slug}>
-      {/* Mismo destino que "Ver perfil"; fuera del orden de tabulación para no duplicarlo. */}
-      <a className="card__figure" href={url} target="_blank" rel="noopener noreferrer" tabIndex={-1}>
+      {/* El clic solo activa el efecto (en celulares no hay hover); el perfil se abre con el botón. */}
+      <div
+        className={active ? 'card__figure is-active' : 'card__figure'}
+        onClick={() => setActive((value) => !value)}
+      >
         <div className="card__crop" style={cropStyle}>
           <div className={crop.flipX ? 'card__crop-inner is-flipped' : 'card__crop-inner'}>
             <img src={photo} alt={name} style={imgStyle} loading="lazy" />
           </div>
         </div>
-        <span className="card__figure-overlay" aria-hidden="true">
-          <span className="card__figure-label">
-            Ver perfil <span className="card__cta-arrow">↗</span>
-          </span>
-        </span>
-      </a>
+        <span className="card__figure-overlay" aria-hidden="true" />
+      </div>
       <div className="card__info">
         <p className="card__tag">PONENTE · GOBERNA</p>
         <h2 className="card__name">{name}</h2>

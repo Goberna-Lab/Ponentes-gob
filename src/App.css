@@ -180,10 +180,43 @@
 .card {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  border-radius: 12px;
+  overflow: visible;
+  border-radius: 16px;
   background: #fff;
   scroll-margin-top: 24px;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 1px 3px rgba(14, 21, 38, 0.06),
+              0 1px 2px rgba(14, 21, 38, 0.04);
+  will-change: transform;
+}
+
+.card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 20px 50px rgba(14, 21, 38, 0.15),
+              0 8px 20px rgba(14, 21, 38, 0.08),
+              0 0 0 1px rgba(112, 87, 43, 0.08);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 60%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold-from), var(--gold-to), transparent);
+  border-radius: 0 0 4px 4px;
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  opacity: 0;
+  z-index: 10;
+}
+
+.card:hover::before {
+  transform: translateX(-50%) scaleX(1);
+  opacity: 1;
 }
 
 .card__figure {
@@ -191,88 +224,42 @@
   display: block;
   height: 440px;
   overflow: hidden;
-  border-radius: 2px 2px 0 0;
+  border-radius: 14px 14px 0 0;
   background: var(--color-photo-bg);
-  cursor: pointer;
+}
+
+/* Hover de la foto: acercamiento lento y un velo muy suave abajo. */
+.card__figure::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(14, 21, 38, 0.12), transparent 45%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
 }
 
 .card__crop {
   position: absolute;
   bottom: 0;
   transform: translateX(-50%);
-}
-
-.card__figure-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(14, 21, 38, 0.08);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.card__figure.is-active .card__figure-overlay {
-  opacity: 1;
-}
-
-.card__figure:focus-visible {
-  outline: 2px solid var(--color-navy);
-  outline-offset: -2px;
-}
-
-/* Foto ampliada al hacer clic */
-.preview {
-  max-width: calc(100% - 32px);
-  padding: 0;
-  border: 0;
-  border-radius: 12px;
-  background: transparent;
-  box-shadow: 0 12px 40px rgba(14, 21, 38, 0.18);
-  overflow: hidden;
-  cursor: zoom-out;
-
-  &::backdrop {
-    background: rgba(14, 21, 38, 0.25);
-  }
-
-  &[open] {
-    animation: preview-in 0.2s ease;
-  }
-}
-
-@keyframes preview-in {
-  from {
-    opacity: 0;
-    transform: scale(0.98);
-  }
-}
-
-.preview__photo {
-  --scale: 1.1;
-  position: relative;
-  width: calc(330px * var(--scale));
-  max-width: 100%;
-  height: calc(440px * var(--scale));
-  overflow: hidden;
-  background: var(--color-photo-bg);
-
-  @media (max-width: 480px) {
-    --scale: 0.9;
-  }
-}
-
-.preview__figure {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 330px;
-  height: 440px;
-  transform: translateX(-50%) scale(var(--scale));
   transform-origin: bottom center;
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) {
+  .card__figure:hover::after {
+    opacity: 1;
+  }
+
+  .card__figure:hover .card__crop {
+    transform: translateX(-50%) scale(1.035);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .preview[open] {
-    animation: none;
+  .card__crop {
+    transition: none;
   }
 }
 
@@ -295,33 +282,60 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 16px;
+  padding: 20px;
   background: #fff;
+  position: relative;
 }
 
 .card__tag {
-  font-weight: 500;
-  font-size: 11px;
+  font-weight: 600;
+  font-size: 10px;
   line-height: 14px;
-  letter-spacing: 0.44px;
-  color: var(--color-muted);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--gold-from);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease 0.1s, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+}
+
+.card:hover .card__tag {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .card__name {
-  margin-top: 6px;
-  font-weight: 600;
+  margin-top: 8px;
+  font-weight: 700;
   font-size: 19px;
   line-height: 26px;
   text-transform: uppercase;
+  letter-spacing: 0.3px;
   color: var(--color-ink);
+  transition: color 0.3s ease;
+}
+
+.card:hover .card__name {
+  background: linear-gradient(135deg, var(--color-ink) 0%, var(--gold-from) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .card__specialty {
   min-height: 40px;
-  margin-top: 6px;
+  margin-top: 8px;
   font-size: 14px;
   line-height: 20px;
   color: var(--color-text);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease 0.15s, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+}
+
+.card:hover .card__specialty {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .card__divider {
@@ -330,6 +344,11 @@
   margin: 18px 0;
   border: 0;
   background: var(--color-line);
+  transition: background 0.3s ease;
+}
+
+.card:hover .card__divider {
+  background: linear-gradient(90deg, var(--gold-from), var(--gold-to));
 }
 
 .card__actions {
@@ -354,10 +373,31 @@
   line-height: 20px;
   text-decoration: none;
   white-space: nowrap;
-  transition: background-color 0.2s;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--gold-from), var(--gold-to));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 
   &:hover {
-    background: #1c2740;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(112, 87, 43, 0.3);
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
   }
 
   &:focus-visible {
@@ -368,6 +408,11 @@
 
 .card__cta-arrow {
   font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .card__cta-arrow {
+  transform: translate(2px, -2px);
 }
 
 .card__copy {
@@ -380,10 +425,12 @@
   border-radius: 8px;
   background: #fff;
   cursor: pointer;
-  transition: border-color 0.2s;
+  transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
-    border-color: var(--color-ink);
+    border-color: var(--gold-to);
+    background: linear-gradient(135deg, rgba(112, 87, 43, 0.08), rgba(214, 167, 82, 0.08));
+    box-shadow: 0 2px 8px rgba(112, 87, 43, 0.15);
   }
 
   &:focus-visible {
@@ -393,6 +440,7 @@
 
   &.is-copied {
     border-color: var(--gold-to);
+    background: linear-gradient(135deg, rgba(112, 87, 43, 0.12), rgba(214, 167, 82, 0.12));
   }
 
   .check-icon {

@@ -1,10 +1,17 @@
-import { useState, type CSSProperties } from 'react'
+import { useRef, useState, type CSSProperties } from 'react'
 import type { Ponente } from '../data/ponentes'
 
 export function SpeakerCard({ ponente }: { ponente: Ponente }) {
   const { slug, url, name, specialty, photo, crop } = ponente
   const [copied, setCopied] = useState(false)
   const [active, setActive] = useState(false)
+  const dialogRef = useRef<HTMLDialogElement>(null)
+
+  const openPreview = () => {
+    dialogRef.current?.showModal()
+    setActive(true)
+  }
+  const closePreview = () => dialogRef.current?.close()
 
   const handleCopy = async () => {
     if (!(await copyText(url))) return
@@ -27,10 +34,19 @@ export function SpeakerCard({ ponente }: { ponente: Ponente }) {
 
   return (
     <article className="card" id={slug}>
-      {/* El clic solo activa/desactiva el efecto; el perfil se abre con el botón. */}
+      {/* El clic abre la foto ampliada; el perfil se abre con el botón. */}
       <div
         className={active ? 'card__figure is-active' : 'card__figure'}
-        onClick={() => setActive((value) => !value)}
+        onClick={openPreview}
+        role="button"
+        tabIndex={0}
+        aria-label={`Ver foto de ${name}`}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault()
+            openPreview()
+          }
+        }}
       >
         <div className="card__crop" style={cropStyle}>
           <div className={crop.flipX ? 'card__crop-inner is-flipped' : 'card__crop-inner'}>
@@ -73,6 +89,25 @@ export function SpeakerCard({ ponente }: { ponente: Ponente }) {
           </button>
         </div>
       </div>
+      <dialog
+        ref={dialogRef}
+        className="preview"
+        aria-label={name}
+        onClose={() => setActive(false)}
+        // Cualquier clic (en la foto o fuera) la cierra; Esc también.
+        onClick={closePreview}
+      >
+        {/* Mismo recorte que la tarjeta (330×440), ampliado con CSS. */}
+        <div className="preview__photo">
+          <div className="preview__figure">
+            <div className="card__crop" style={cropStyle}>
+              <div className={crop.flipX ? 'card__crop-inner is-flipped' : 'card__crop-inner'}>
+                <img src={photo} alt={name} style={imgStyle} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </dialog>
     </article>
   )
 }

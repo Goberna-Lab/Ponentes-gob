@@ -7,6 +7,20 @@ import { SpeakerCard } from './SpeakerCard'
 const normalize = (value: string) =>
   value.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim()
 
+const scoreSuggestion = (p: Ponente, q: string) => {
+  const name = normalize(p.name)
+  const specialty = normalize(p.specialty)
+  const fullName = `${name} ${specialty}`
+  const firstName = name.split(' ')[0]
+
+  if (name.startsWith(q)) return 0
+  if (firstName.startsWith(q)) return 1
+  if (fullName.startsWith(q)) return 2
+  if (name.includes(q)) return 3
+  if (firstName.includes(q)) return 4
+  return 5
+}
+
 export function SpeakersSection() {
   const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
@@ -16,8 +30,18 @@ export function SpeakersSection() {
   const listRef = useRef<HTMLUListElement>(null)
 
   const q = normalize(query)
-  const suggestions = q ? ponentes.filter((p) => normalize(`${p.name} ${p.specialty}`).includes(q)).slice(0, 5) : []
-  const results = q ? ponentes.filter((p) => normalize(`${p.name} ${p.specialty}`).includes(q)) : ponentes
+  const allMatches = q ? ponentes.filter((p) => normalize(`${p.name} ${p.specialty}`).includes(q)) : []
+  const suggestions = allMatches
+    .map((p) => ({ p, score: scoreSuggestion(p, q) }))
+    .sort((a, b) => a.score - b.score || a.p.name.localeCompare(b.p.name))
+    .slice(0, 5)
+    .map((item) => item.p)
+  const results = q
+    ? allMatches
+        .map((p) => ({ p, score: scoreSuggestion(p, q) }))
+        .sort((a, b) => a.score - b.score || a.p.name.localeCompare(b.p.name))
+        .map((item) => item.p)
+    : ponentes
 
   useEffect(() => {
     setOpen(suggestions.length > 0 && query.length > 0)

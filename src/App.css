@@ -313,10 +313,7 @@
 }
 
 .card:hover .card__name {
-  background: linear-gradient(135deg, var(--color-ink) 0%, var(--gold-from) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--gold-from);
 }
 
 .card__specialty {
